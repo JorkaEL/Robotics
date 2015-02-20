@@ -1,5 +1,6 @@
 package com.robotics.robotics;
 
+import android.content.pm.ActivityInfo;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -17,6 +18,7 @@ public class RobotActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_robot);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         robot=(RobotView)findViewById(R.id.RobotView);
         robot.parentActivity=this;
