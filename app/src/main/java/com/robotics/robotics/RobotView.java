@@ -47,6 +47,10 @@ public class RobotView extends SurfaceView implements View.OnClickListener,
     int ledSizeW = 0;
     int ledSizeH = 0;
 
+    //Definition du decalage a porté aux images
+    int decaFlecheH = 2;
+    int decaFlecheW = 20;
+
 
     public RobotView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -88,6 +92,7 @@ public class RobotView extends SurfaceView implements View.OnClickListener,
 
         ledSizeW = ledON.getWidth();
         ledSizeH = ledON.getHeight();
+
 
         Log.i(">>> Projet", " loadimage ");
 
@@ -157,14 +162,21 @@ public class RobotView extends SurfaceView implements View.OnClickListener,
     }
 
     public void paintCommande(Canvas canvas) {
-        // Log.i("-> Fct <-", " paintCommande ");
+         Log.i("-> Fct <-", " paintCommande ");
 
-        canvas.drawBitmap(fleche_Avance, flecheSizeW, flecheSizeH, null);
+        //dessinage des fleches
+        canvas.drawBitmap(fleche_Avance, flecheSizeW*decaFlecheW, flecheSizeH*decaFlecheH, null);
+        canvas.drawBitmap(fleche_Gauche, flecheSizeW*(decaFlecheW-1), flecheSizeH*(decaFlecheH+1), null);
+        canvas.drawBitmap(fleche_Droite, flecheSizeW*(decaFlecheW+1), flecheSizeH*(decaFlecheH+1), null);
+        canvas.drawBitmap(fleche_Recule, flecheSizeW*decaFlecheW, flecheSizeH*(decaFlecheH+2), null);
 
+         //dessinage de la conection bluethoot
+        canvas.drawBitmap(connectionOF, connectionSizeW, connectionSizeH, null);
+        //canvas.drawBitmap(connectionON, connectionSizeW, connectionSizeH, null);
 
-                /*canvas.drawBitmap(tmpSmallimg, mapLeftAnchorMinus + j
-                        * mapTileSizeMinus, mapTopAnchorMinus + i
-                        * mapTileSizeMinus, null);*/
+        //dessinage de l'allumage des led
+        canvas.drawBitmap(ledOF, ledSizeW*3, ledSizeH, null);
+        //canvas.drawBitmap(ledON, ledSizeW*2, ledSizeH, null);
 
 
     }
