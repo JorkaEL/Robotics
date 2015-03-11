@@ -51,6 +51,9 @@ public class RobotView extends SurfaceView implements View.OnClickListener,
     int decaFlecheH = 2;
     int decaFlecheW = 20;
 
+    float positionClickX;
+    float positionClickY;
+
 
     public RobotView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -94,7 +97,7 @@ public class RobotView extends SurfaceView implements View.OnClickListener,
         ledSizeH = ledON.getHeight();
 
 
-        Log.i(">>> Projet", " loadimage ");
+        //Log.i(">>> Projet", " loadimage ");
 
     }
 
@@ -124,6 +127,53 @@ public class RobotView extends SurfaceView implements View.OnClickListener,
 
 
     }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        // TODO Auto-generated method stub
+        // Log.d("onTouchEvent", "r�cup�ration de la position du doigt");
+        positionClickX = event.getX();// recuperation position X
+        positionClickY = event.getY();// recuperation position Y
+
+        Log.i("x"+positionClickX, " y "+positionClickY);
+        switch (event.getAction()) {// Swtich sur le type d'action
+            case MotionEvent.ACTION_MOVE:
+                // System.out.println("ACTION_MOVE");
+
+
+
+                break;
+            case MotionEvent.ACTION_DOWN:
+                //System.out.println("ACTION_DOWN");
+                if(((positionClickX>(flecheSizeW*decaFlecheW)) && (positionClickX<((flecheSizeW*decaFlecheW)+flecheSizeW))) && ((positionClickY>(flecheSizeH*decaFlecheH)) &&(positionClickY<((flecheSizeH*decaFlecheH)+flecheSizeH)))){
+                    Log.i("-> Fct onTouch <-", " Avance ");
+                }
+                else if(((positionClickX>(flecheSizeW*(decaFlecheW-1))) && (positionClickX<((flecheSizeW*decaFlecheW)))) && ((positionClickY>(flecheSizeH*(decaFlecheH+1))) &&(positionClickY<((flecheSizeH*(decaFlecheH+1))+flecheSizeH)))){
+                    Log.i("-> Fct onTouch <-", " Gauche ");
+                }else if(((positionClickX>(flecheSizeW*(decaFlecheW+1))) && (positionClickX<((flecheSizeW*(decaFlecheW+1))+flecheSizeW))) && ((positionClickY>(flecheSizeH*(decaFlecheH+1))) &&(positionClickY<((flecheSizeH*(decaFlecheH+1))+flecheSizeH)))){
+                    Log.i("-> Fct onTouch <-", " Droite ");
+                }else if(((positionClickX>(flecheSizeW*decaFlecheW)) && (positionClickX<((flecheSizeW*decaFlecheW)+flecheSizeW))) && ((positionClickY>(flecheSizeH*(decaFlecheH+2))) &&(positionClickY<((flecheSizeH*(decaFlecheH+2))+flecheSizeH)))){
+                    Log.i("-> Fct onTouch <-", " Arriere ");
+                }else if(((positionClickX>connectionSizeW) && (positionClickX<(connectionSizeW*2))) && ((positionClickY>connectionSizeH) &&(positionClickY<(connectionSizeH*2)))){
+                    Log.i("-> Fct onTouch <-", " Bluetooth ");
+                }else if(((positionClickX>(ledSizeW*3)) && (positionClickX<((ledSizeW*4)))) && ((positionClickY>ledSizeH) &&(positionClickY<(ledSizeH*2)))){
+                    Log.i("-> Fct onTouch <-", " Led ");
+                }else{
+                    Log.i("-> Fct onTouch <-", " rien ");
+                }
+
+                break;
+            case MotionEvent.ACTION_UP:
+                //System.out.println("ACTION_UP");
+
+                break;
+            default:
+                System.out.println();
+        }
+
+        return super.onTouchEvent(event);
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -162,7 +212,7 @@ public class RobotView extends SurfaceView implements View.OnClickListener,
     }
 
     public void paintCommande(Canvas canvas) {
-         Log.i("-> Fct <-", " paintCommande ");
+        // Log.i("-> Fct <-", " paintCommande ");
 
         //dessinage des fleches
         canvas.drawBitmap(fleche_Avance, flecheSizeW*decaFlecheW, flecheSizeH*decaFlecheH, null);

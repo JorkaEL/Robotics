@@ -3,6 +3,8 @@ package com.robotics.robotics;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,5 +48,39 @@ public class RobotActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        Log.i("-> FCT <-", "onPause");
+    }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        Log.i("-> FCT <-", "onResume");
+    }
+
+    @Override
+    public void onStart(){
+        super.onStart();
+    }
+
+    @Override
+    public void onStop(){
+        super.onStop();
+        Log.i("-> FCT <-", "onStop");
+    }
+
+    @Override
+    public void onRestart(){
+        super.onRestart();
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+
+        return super.onKeyDown(keyCode, event);
     }
 }
