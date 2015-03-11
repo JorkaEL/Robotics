@@ -12,6 +12,9 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
 
 /**
  * Created by xavier on 04/02/15.
@@ -54,6 +57,9 @@ public class RobotView extends SurfaceView implements View.OnClickListener,
     float positionClickX;
     float positionClickY;
 
+    //variable bluetooth
+    public BtInterface bl;
+    BluetoothAdapter blueAdapter;
 
     public RobotView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -63,7 +69,7 @@ public class RobotView extends SurfaceView implements View.OnClickListener,
         robotcontext = context;
         robotRes = robotcontext.getResources();
         loadimages(robotRes);
-
+        BluetoothAdapter blueAdapter = BluetoothAdapter.getDefaultAdapter();
         cv_thread = new Thread(this);
         setFocusable(true);
         setOnClickListener(this);
@@ -104,8 +110,16 @@ public class RobotView extends SurfaceView implements View.OnClickListener,
     public void initparameters() {
         Log.i("-> Fct <-", " initparameters ");
 
+        if (blueAdapter == null) {
+            // Le terminal ne possède pas le Bluetooth
+            Log.i("Bluetooth", " ne possède pas le Bluetooth ");
+        }
+        /*Canvas c = null;
+        c = holder.lockCanvas(null);
+        dessin(c);*/
+
         // Limite haute matrice
-        double temp = getHeight() / 2.2;
+        //double temp = getHeight() / 2.2;
        /* mapTopAnchor = (int) temp;
 
         // Limite gauche matrice
@@ -147,13 +161,17 @@ public class RobotView extends SurfaceView implements View.OnClickListener,
                 //System.out.println("ACTION_DOWN");
                 if(((positionClickX>(flecheSizeW*decaFlecheW)) && (positionClickX<((flecheSizeW*decaFlecheW)+flecheSizeW))) && ((positionClickY>(flecheSizeH*decaFlecheH)) &&(positionClickY<((flecheSizeH*decaFlecheH)+flecheSizeH)))){
                     Log.i("-> Fct onTouch <-", " Avance ");
+                   // bl.sendData("1");
                 }
                 else if(((positionClickX>(flecheSizeW*(decaFlecheW-1))) && (positionClickX<((flecheSizeW*decaFlecheW)))) && ((positionClickY>(flecheSizeH*(decaFlecheH+1))) &&(positionClickY<((flecheSizeH*(decaFlecheH+1))+flecheSizeH)))){
                     Log.i("-> Fct onTouch <-", " Gauche ");
+                    //bl.sendData("2");
                 }else if(((positionClickX>(flecheSizeW*(decaFlecheW+1))) && (positionClickX<((flecheSizeW*(decaFlecheW+1))+flecheSizeW))) && ((positionClickY>(flecheSizeH*(decaFlecheH+1))) &&(positionClickY<((flecheSizeH*(decaFlecheH+1))+flecheSizeH)))){
                     Log.i("-> Fct onTouch <-", " Droite ");
+                    //bl.sendData("3");
                 }else if(((positionClickX>(flecheSizeW*decaFlecheW)) && (positionClickX<((flecheSizeW*decaFlecheW)+flecheSizeW))) && ((positionClickY>(flecheSizeH*(decaFlecheH+2))) &&(positionClickY<((flecheSizeH*(decaFlecheH+2))+flecheSizeH)))){
                     Log.i("-> Fct onTouch <-", " Arriere ");
+                    //bl.sendData("4");
                 }else if(((positionClickX>connectionSizeW) && (positionClickX<(connectionSizeW*2))) && ((positionClickY>connectionSizeH) &&(positionClickY<(connectionSizeH*2)))){
                     Log.i("-> Fct onTouch <-", " Bluetooth ");
                 }else if(((positionClickX>(ledSizeW*3)) && (positionClickX<((ledSizeW*4)))) && ((positionClickY>ledSizeH) &&(positionClickY<(ledSizeH*2)))){
@@ -247,6 +265,8 @@ public class RobotView extends SurfaceView implements View.OnClickListener,
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
         initparameters();
+        bl= new BtInterface();
+        bl.connect();
         in=true;
         cv_thread = new Thread(this);
         cv_thread.start();
@@ -254,7 +274,7 @@ public class RobotView extends SurfaceView implements View.OnClickListener,
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-
+          // bl.close();
     }
 
 
