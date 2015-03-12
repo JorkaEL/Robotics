@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
-    android:layout_height="fill_parent"> <!--android:paddingLeft="@dimen/activity_horizontal_margin">
+    android:layout_height="fill_parent"
+    android:orientation="horizontal"> <!--android:paddingLeft="@dimen/activity_horizontal_margin">
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".RobotActivity"-->
@@ -9,6 +10,7 @@
         android:id="@+id/RobotView"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        />
 
+        />
+    <TextView android:text="" android:id="@+id/logview" android:bufferType="editable" android:layout_width="fill_parent" android:layout_height="fill_parent"></TextView>
 </LinearLayout>

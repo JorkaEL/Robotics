@@ -6,6 +6,8 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.os.Handler;
+import android.os.Message;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -15,6 +17,7 @@ import android.view.View;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothSocket;
+import android.widget.TextView;
 
 /**
  * Created by xavier on 04/02/15.
@@ -23,6 +26,7 @@ public class RobotView extends SurfaceView implements View.OnClickListener,
         View.OnTouchListener, SurfaceHolder.Callback, Runnable {
 
     Activity parentActivity;
+    BtInterface bl;
 
     private Resources robotRes;
     private Context robotcontext;
@@ -58,8 +62,10 @@ public class RobotView extends SurfaceView implements View.OnClickListener,
     float positionClickY;
 
     //variable bluetooth
-    public BtInterface bl;
+
     BluetoothAdapter blueAdapter;
+
+
 
     public RobotView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -69,7 +75,7 @@ public class RobotView extends SurfaceView implements View.OnClickListener,
         robotcontext = context;
         robotRes = robotcontext.getResources();
         loadimages(robotRes);
-        BluetoothAdapter blueAdapter = BluetoothAdapter.getDefaultAdapter();
+        BluetoothAdapter blueAdapter;
         cv_thread = new Thread(this);
         setFocusable(true);
         setOnClickListener(this);
@@ -109,12 +115,12 @@ public class RobotView extends SurfaceView implements View.OnClickListener,
 
     public void initparameters() {
         Log.i("-> Fct <-", " initparameters ");
-
+        blueAdapter = BluetoothAdapter.getDefaultAdapter();
         if (blueAdapter == null) {
             // Le terminal ne possède pas le Bluetooth
             Log.i("Bluetooth", " ne possède pas le Bluetooth ");
         }else{
-            bl= null;
+            //bl=new BtInterface(handlerStatus, handler);
             bl.connect();
         }
         /*Canvas c = null;
@@ -164,17 +170,17 @@ public class RobotView extends SurfaceView implements View.OnClickListener,
                 //System.out.println("ACTION_DOWN");
                 if(((positionClickX>(flecheSizeW*decaFlecheW)) && (positionClickX<((flecheSizeW*decaFlecheW)+flecheSizeW))) && ((positionClickY>(flecheSizeH*decaFlecheH)) &&(positionClickY<((flecheSizeH*decaFlecheH)+flecheSizeH)))){
                     Log.i("-> Fct onTouch <-", " Avance ");
-                   // bl.sendData("1");
+                    bl.sendData("1");
                 }
                 else if(((positionClickX>(flecheSizeW*(decaFlecheW-1))) && (positionClickX<((flecheSizeW*decaFlecheW)))) && ((positionClickY>(flecheSizeH*(decaFlecheH+1))) &&(positionClickY<((flecheSizeH*(decaFlecheH+1))+flecheSizeH)))){
                     Log.i("-> Fct onTouch <-", " Gauche ");
-                    //bl.sendData("2");
+                    bl.sendData("2");
                 }else if(((positionClickX>(flecheSizeW*(decaFlecheW+1))) && (positionClickX<((flecheSizeW*(decaFlecheW+1))+flecheSizeW))) && ((positionClickY>(flecheSizeH*(decaFlecheH+1))) &&(positionClickY<((flecheSizeH*(decaFlecheH+1))+flecheSizeH)))){
                     Log.i("-> Fct onTouch <-", " Droite ");
-                    //bl.sendData("3");
+                    bl.sendData("3");
                 }else if(((positionClickX>(flecheSizeW*decaFlecheW)) && (positionClickX<((flecheSizeW*decaFlecheW)+flecheSizeW))) && ((positionClickY>(flecheSizeH*(decaFlecheH+2))) &&(positionClickY<((flecheSizeH*(decaFlecheH+2))+flecheSizeH)))){
                     Log.i("-> Fct onTouch <-", " Arriere ");
-                    //bl.sendData("4");
+                    bl.sendData("4");
                 }else if(((positionClickX>connectionSizeW) && (positionClickX<(connectionSizeW*2))) && ((positionClickY>connectionSizeH) &&(positionClickY<(connectionSizeH*2)))){
                     Log.i("-> Fct onTouch <-", " Bluetooth ");
                 }else if(((positionClickX>(ledSizeW*3)) && (positionClickX<((ledSizeW*4)))) && ((positionClickY>ledSizeH) &&(positionClickY<(ledSizeH*2)))){

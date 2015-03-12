@@ -1,6 +1,8 @@
 package com.robotics.robotics;
 
 import android.content.pm.ActivityInfo;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,11 +11,40 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.TextView;
 
 
 public class RobotActivity extends ActionBarActivity {
 
     RobotView robot;
+    //BtInterface bl;
+    private TextView logview;
+    private long lastTime = 0;
+
+
+    final Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            String data = msg.getData().getString("receivedData");
+
+            long t = System.currentTimeMillis();
+            if(t-lastTime > 100) {// Pour éviter que les messages soit coupés
+                logview.append("\n");
+                lastTime = System.currentTimeMillis();
+            }
+            logview.append(data);
+        }
+    };
+
+    final Handler handlerStatus = new Handler() {
+        public void handleMessage(Message msg) {
+            //int co = msg.arg1;
+            //if(co == 1) {
+                logview.append("Connected\n");
+            //} else if(co == 2) {
+            //    logview.append("Disconnected\n");
+           // }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +56,10 @@ public class RobotActivity extends ActionBarActivity {
         robot=(RobotView)findViewById(R.id.RobotView);
         robot.parentActivity=this;
         robot.setVisibility(View.VISIBLE);
+
+        //bl = new BtInterface(handlerStatus, handler);
+        robot.bl = new BtInterface(handlerStatus, handler);
+        logview = (TextView)findViewById(R.id.logview);
     }
 
 
