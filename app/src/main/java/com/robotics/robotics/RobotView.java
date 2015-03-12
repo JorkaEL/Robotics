@@ -113,6 +113,9 @@ public class RobotView extends SurfaceView implements View.OnClickListener,
         if (blueAdapter == null) {
             // Le terminal ne possède pas le Bluetooth
             Log.i("Bluetooth", " ne possède pas le Bluetooth ");
+        }else{
+            bl= null;
+            bl.connect();
         }
         /*Canvas c = null;
         c = holder.lockCanvas(null);
@@ -264,12 +267,12 @@ public class RobotView extends SurfaceView implements View.OnClickListener,
 
     @Override
     public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        initparameters();
-        bl= new BtInterface();
-        bl.connect();
+
         in=true;
         cv_thread = new Thread(this);
         cv_thread.start();
+        initparameters();
+
     }
 
     @Override
